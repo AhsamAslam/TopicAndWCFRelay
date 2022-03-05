@@ -1,7 +1,9 @@
 ﻿using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using Newtonsoft.Json;
 using System;
 using System.ServiceModel;
+using System.Text;
 
 namespace WCFServiceHost
 {
@@ -39,7 +41,10 @@ namespace WCFServiceHost
 
             subClient.OnMessage(m =>
             {
-                Console.WriteLine(m.GetBody<string>());
+                string p = m.GetBody<string>();
+                User customer = JsonConvert.DeserializeObject<User>(p);
+                Console.WriteLine($"User Id = {customer.UserID}");
+                Console.WriteLine($"User Name = {customer.UserName}");
             });
         }
         static ServiceHost RegisterWCFRelay()

@@ -1,8 +1,10 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
+using Newtonsoft.Json;
 using System;
 using System.ServiceModel;
+using System.Text;
 using System.Threading.Tasks;
 using WCFServiceClient.Topic;
 using static WCFServiceClient.WCFContract;
@@ -31,7 +33,14 @@ namespace WCFServiceClient
             // Sending Data to Azure Topic
             Console.WriteLine("Please enter for sending message to your topic");
             Console.ReadKey();
-            SendMessage("Topic Message");
+
+
+            User user = new User()
+            {
+                UserID = 1,
+                UserName = "Test User"
+            };
+            SendMessage(JsonConvert.SerializeObject(user));
 
 
 
