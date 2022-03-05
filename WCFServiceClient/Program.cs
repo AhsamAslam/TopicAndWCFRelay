@@ -64,11 +64,11 @@ namespace WCFServiceClient
 
             cf.Endpoint.Behaviors.Add(new TransportClientEndpointBehavior 
             { TokenProvider = TokenProvider.CreateSharedAccessSignatureTokenProvider(policy, accessKey) });
-            Console.WriteLine("Please enter for sending message to your Relay");
-            Console.ReadKey();
+            Console.WriteLine("Please enter message for sending it to your Relay");
+            var input = Console.ReadLine();
             using (var ch = cf.CreateChannel())
             {
-                Console.WriteLine(ch.DoAction("Test"));
+                Console.WriteLine(ch.DoAction(input));
             }
         }
 
