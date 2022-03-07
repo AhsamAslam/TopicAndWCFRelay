@@ -27,20 +27,25 @@ namespace WCFServiceClient
 
         static void Main(string[] args)
         {
-            // Registering and Sending Data to WCF Relay
-            CallWCFContract();
-
-            // Sending Data to Azure Topic
-            Console.WriteLine("Please enter for sending message to your topic");
-            Console.ReadKey();
-
-
+            Console.WriteLine("Please Enter the User Id : ");
+            var id = Console.ReadLine();
+            Console.WriteLine("Please Enter the User Name : ");
+            var name = Console.ReadLine();
             User user = new User()
             {
-                UserID = 1,
-                UserName = "Test User"
+                UserID = id,
+                UserName = name
             };
-            SendMessage(JsonConvert.SerializeObject(user));
+            string data = JsonConvert.SerializeObject(user);
+            // Registering and Sending Data to WCF Relay
+            CallWCFContract(data);
+
+            // Sending Data to Azure Topic
+            //Console.WriteLine("Please enter for sending message to your topic");
+            //Console.ReadKey();
+
+
+            SendMessage(data);
 
 
 
@@ -54,7 +59,7 @@ namespace WCFServiceClient
             var msg = new BrokeredMessage(message);
             topicClient.Send(msg);
         }
-        static void CallWCFContract()
+        static void CallWCFContract(string data)
         {
             ServiceBusEnvironment.SystemConnectivity.Mode = ConnectivityMode.AutoDetect;
 
@@ -64,11 +69,15 @@ namespace WCFServiceClient
 
             cf.Endpoint.Behaviors.Add(new TransportClientEndpointBehavior 
             { TokenProvider = TokenProvider.CreateSharedAccessSignatureTokenProvider(policy, accessKey) });
-            Console.WriteLine("Please enter message for sending it to your Relay");
-            var input = Console.ReadLine();
+            //Console.WriteLine("Please enter message for sending it to your Relay");
+            //var input = Console.ReadLine();
             using (var ch = cf.CreateChannel())
             {
-                Console.WriteLine(ch.DoAction(input));
+                string result = ch.DoAction(data);
+                Console.WriteLine($"Message recieved on Relay in JSON Format : {result}");
+                User customer = JsonConvert.DeserializeObject<User>(result);
+                Console.WriteLine($"User Id = {customer.UserID}");
+                Console.WriteLine($"User Name = {customer.UserName}");
             }
         }
 

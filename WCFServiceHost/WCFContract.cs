@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -18,9 +19,9 @@ namespace WCFServiceHost
 
     public class WCFContract : IWCFContract
     {
-        public string DoAction(string userName)
+        public string DoAction(string data)
         {
-            return "Message is recieved from: " + userName;
+            return  data;
         }
     }
 }

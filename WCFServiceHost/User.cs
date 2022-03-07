@@ -8,7 +8,7 @@ namespace WCFServiceHost
 {
     public class User
     {
-        public int UserID { get; set; }
+        public string UserID { get; set; }
         public string UserName { get; set; }
     }
 }

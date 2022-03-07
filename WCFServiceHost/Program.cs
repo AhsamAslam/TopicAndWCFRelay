@@ -42,6 +42,7 @@ namespace WCFServiceHost
             subClient.OnMessage(m =>
             {
                 string p = m.GetBody<string>();
+                Console.WriteLine("Message recieved on Topic in JSON Format : " + p);
                 User customer = JsonConvert.DeserializeObject<User>(p);
                 Console.WriteLine($"User Id = {customer.UserID}");
                 Console.WriteLine($"User Name = {customer.UserName}");
